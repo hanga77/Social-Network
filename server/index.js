@@ -4,7 +4,7 @@ import mongoose from 'mongoose';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import postRoutes from './route/posts.js';
-
+import userRoutes from './route/users.js';
 
 
  const app = express();
@@ -16,7 +16,8 @@ import postRoutes from './route/posts.js';
  app.use(cors());
  //taken all route in the file post.js and start /posts
  app.use('/posts',postRoutes);
- 
+ app.use('/user',userRoutes);
+
  //start connect to database on cloud 
 
  const PORT = process.env.PORT || 5000;
