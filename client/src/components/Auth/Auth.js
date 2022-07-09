@@ -16,7 +16,8 @@ import { useDispatch } from 'react-redux';
 import { useNavigate} from 'react-router-dom'
 import { signin, signup} from '../../actions/auth'
 
-const initialState ={firstName:'',lastName:'', email:'', password:'', confirmPassword:''}
+const initialState ={firstName:'',lastName:'', email:'', password:'', confirmPassword:''};
+
 const Auth = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
@@ -47,23 +48,27 @@ const Auth = () => {
   const handleShowPassword = () =>
     setShowPassword((prevShowPassword) => !prevShowPassword);
 
+   
   const googleSuccess = async (res) => {
-    const result = res?.profileObj;
-    const token = res?.tokenId;
+    //const result = res.profileObj;
+    //const token = res.tokenId;
 
-    try {
+    if ("profileObj" in res) {
+      console.log(res.profileObj) // works fine
+    }
+    /*try {
       dispatch({ type: 'AUTH', data: { result, token } });
 
       history.push('/')
     } catch (error) {
       console.log(error);
-    }
-  };
+    }*/
+  }
   const googleFailure = (error) => {
     console.log(error);
     console.log('Google Sign In was unsuccessful. Try Again Later');
   };
-
+  
   return (
     <Container component="main" maxWidth="xs">
       <Paper className={classes.paper} elevation={3}>
@@ -139,6 +144,7 @@ const Auth = () => {
               )}
               onSuccess={googleSuccess}
               onFailure={googleFailure}
+              
               cookiePolicy="single_host_origin"
             />
           </Grid>

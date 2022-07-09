@@ -20,7 +20,7 @@ import { useDispatch } from 'react-redux';
     }
 
     useEffect(()=>{
-        const token =user.token;
+        //const token =user.token;
         setUser(JSON.parse(localStorage.getItem('profile')));
     },[location]);
 
