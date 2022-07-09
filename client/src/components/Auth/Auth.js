@@ -13,16 +13,31 @@ import Icon from './icon';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Input from './Input';
 import { useDispatch } from 'react-redux';
+import { useNavigate} from 'react-router-dom'
+import { signin, signup} from '../../actions/auth'
 
+const initialState ={firstName:'',lastName:'', email:'', password:'', confirmPassword:''}
 const Auth = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
+  const [formData,setFormData] =  useState(initialState);
   const [showPassword, setShowPassword] = useState(false);
   const [isSignUp, setIsSignUp] = useState(false);
+  const history = useNavigate();
 
-  const handleSubmit = () => {};
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if(isSignUp){
+      dispatch(signup(formData, history))
 
-  const handleChange = () => {};
+    }else{
+      dispatch(signin(formData,history))
+    }
+  };
+
+  const handleChange = (e) => {
+    setFormData({...formData, [e.target.name]: e.target.value });
+  };
 
   const switchMode = () => {
     setIsSignUp((prevIsSignUp) => !prevIsSignUp);
@@ -33,11 +48,13 @@ const Auth = () => {
     setShowPassword((prevShowPassword) => !prevShowPassword);
 
   const googleSuccess = async (res) => {
-    const result = res.profileObj;
-    const token = res.tokenId;
+    const result = res?.profileObj;
+    const token = res?.tokenId;
 
     try {
       dispatch({ type: 'AUTH', data: { result, token } });
+
+      history.push('/')
     } catch (error) {
       console.log(error);
     }
@@ -128,6 +145,7 @@ const Auth = () => {
           <Grid container justify="flex-end">
             <Grid item>
               <Button onClick={switchMode}>
+                <input type="checkbox" />
                 {isSignUp
                   ? 'Already have an account? Sign In'
                   : "Don't have an account? Sign Up "}
